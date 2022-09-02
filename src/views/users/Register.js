@@ -3,63 +3,60 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import authStyle from './css/auth.module.css';
-import { loginUser } from '../../server/actions/userAction';
-
-function Login() {
-
+import { registerUser } from '../../server/actions/userAction';
+function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState({});
 
-  const initialLoginState = {
-    username: null,
+	const initialRegisterState = {
+		name: null,
+    email: null,
+    phone: null,
     password: null
-    };
-    const [user, setUser] = useState(initialLoginState);
-
-    const { loading, userInfo, error, success } = useSelector(
-        (state) => state.user
-    );
-
-    useEffect(() => {
-        // redirect user to login page if registration was successful
-        if (success) navigate('/login')
-        // redirect authenticated user to profile screen
-        if (userInfo) navigate('/user-profile')
-    }, [navigate, userInfo, success]);
-
-    const handleInputChange = event => {
-    const { name, value } = event.target;
-    setUser({ ...user, [name]: value });
   };
+  const [user, setUser] = useState(initialRegisterState);
 
-    const handleSubmit = async () => {
+  const { loading, userInfo, error, success } = useSelector(
+    (state) => state.user
+  );
 
-        console.log('Button Clicked!');
-        //event.preventDefault();
-    //if (canSave) {
+  useEffect(() => {
+      // redirect user to login page if registration was successful
+      if (success) navigate('/login')
+      // redirect authenticated user to profile screen
+      if (userInfo) navigate('/user-profile')
+  }, [navigate, userInfo, success]);
+
+  const handleInputChange = event => {
+		const { name, value } = event.target;
+		setUser({ ...user, [name]: value });
+	};
+
+  const handleSubmit = async () => {
+      console.log('Button Clicked!');
     try {
       
       if(
-        user.username &&
+        user.name &&
+        user.email &&
+        user.phone &&
         user.password
       ) {
-        await dispatch(loginUser(user)).unwrap();
+        await dispatch(registerUser(user)).unwrap();
         //toast.success('course successful created');
       } else {
         //toast.warning('Invalid data submited');
       }
-
-
     } catch (err) {
       console.error('Failed to save the course: ', err)
       //toast.warning(err.message);
     } finally {
 
     }
-    //}
   }
+
     return (
       <>
         <div className="container-xxl">
@@ -131,26 +128,45 @@ function Login() {
                   </div>
                   {/* <!-- /Logo --> */}
                   <h4 className="mb-2">Welcome to Sneat! 👋</h4>
-                  <p className="mb-4">Please sign-in to your account and start the adventure</p>
+                  <p className="mb-4">Please sign-up to your details and start the adventure</p>
 
                   <form id="formAuthentication" className="mb-3">
                     <div className="mb-3">
-                      <label htmlFor="email" className="form-label">Email or Phone</label>
+                      <label htmlFor="name" className="form-label">Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your name"
+                        autoFocus
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="email" className="form-label">Email</label>
                       <input
                         type="text"
                         className="form-control"
                         id="email"
-                        name="username"
-                        placeholder="Enter your email or phone"
+                        name="email"
+                        placeholder="Enter your email"
+                        autoFocus
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="phone" className="form-label">Phone</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="phone"
+                        name="phone"
+                        placeholder="Enter your phone"
                         autoFocus
                       />
                     </div>
                     <div className="mb-3 form-password-toggle">
                       <div className="d-flex justify-content-between">
                         <label className="form-label" htmlFor="password">Password</label>
-                        <a href="auth-forgot-password-basic.html">
-                          <small>Forgot Password?</small>
-                        </a>
                       </div>
                       <div className="input-group input-group-merge">
                         <input
@@ -158,7 +174,7 @@ function Login() {
                           id="password"
                           className="form-control"
                           name="password"
-                          placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                          placeholder="Password"
                           aria-describedby="password"
                         />
                         <span className="input-group-text cursor-pointer"><i className="bx bx-hide"></i></span>
@@ -166,19 +182,19 @@ function Login() {
                     </div>
                     <div className="mb-3">
                       <div className="form-check">
-                        <input className="form-check-input" type="checkbox" id="remember-me" />
-                        <label className="form-check-label" htmlFor="remember-me"> Remember Me </label>
+                        <input className="form-check-input" type="checkbox" id="accept-me" />
+                        <label className="form-check-label" htmlFor="accept-me"> Accept terms & Condition </label>
                       </div>
                     </div>
                     <div className="mb-3">
-                      <button className="btn btn-primary d-grid w-100" type="button" onClick={handleSubmit}>Sign in</button>
+                      <button className="btn btn-primary d-grid w-100" type="button" onClick={handleSubmit}>Sign Up</button>
                     </div>
                   </form>
 
                   <p className="text-center">
-                    <span>New on our platform?</span>
-                    <Link to={`/register`}>
-                        <span>Create an account</span>
+                    <span>Already have account?</span>
+                    <Link to={`/login`}>
+                        <span>Signin to your account</span>
                     </Link>
                   </p>
                 </div>
@@ -191,4 +207,4 @@ function Login() {
     );
   }
   
-  export default Login;
+  export default Register;

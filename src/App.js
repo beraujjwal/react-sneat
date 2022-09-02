@@ -9,6 +9,7 @@ const loading = (
 
 const DefaultLayout = React.lazy(() => import('./layouts/DefaultLayout'));
 const Login = React.lazy(() => import('./views/users/Login'));
+const Register = React.lazy(() => import('./views/users/Register'));
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -23,6 +24,7 @@ function App() {
 
             <Routes>
               <Route exact path="/login" name="Login Page" element={<Login />} />
+              <Route exact path="/register" name="Register Page" element={<Register />} />
             </Routes>
           )
         }
