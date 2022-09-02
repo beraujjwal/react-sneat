@@ -10,12 +10,12 @@ function Login() {
           <div className={`${authStyle.authenticationWrapper} ${authStyle.authenticationBasic} container-p-y`}>
             <div className={`${authStyle.authenticationInner}`}>
               {/* <!-- Register --> */}
-              <div className="card">
+              <div className={`${authStyle.card}`}>
                 <div className="card-body">
                   {/* <!-- Logo --> */}
-                  <div className="app-brand justify-content-center">
-                    <a href="index.html" className="app-brand-link gap-2">
-                      <span className="app-brand-logo demo">
+                  <div className={`${authStyle.appBrand} justify-content-center`}>
+                    <a href="index.html" className={`${authStyle.appBrandLink} gap-2`}>
+                      <span className={`${authStyle.appBrandLogo} ${authStyle.demo}`}>
                         <svg
                           width="25"
                           viewBox="0 0 25 42"
@@ -70,7 +70,7 @@ function Login() {
                           </g>
                         </svg>
                       </span>
-                      <span className="app-brand-text demo text-body fw-bolder">Sneat</span>
+                      <span className={`${authStyle.appBrandText} ${authStyle.demo} text-body fw-bolder`}>Sneat</span>
                     </a>
                   </div>
                   {/* <!-- /Logo --> */}
