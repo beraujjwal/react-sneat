@@ -2,53 +2,54 @@ import { createSlice } from "@reduxjs/toolkit";
 import { registerUser, verifyAccount, loginUser, forgotPassword, resetPassword } from '../actions/userAction'
 
 const initialState = {
+    success: false,
     loading: false,
     userInfo: null,
     userToken: null,
     error: null,
-    success: false,
 }
 
 const userSlice = createSlice({
     name: "user",
     initialState,
     extraReducers: {
-        [registerUser.pending]: (state) => {
+        [registerUser.pending]: (state, action) => {
             state.loading = true
             state.error = null
         },
-        [registerUser.fulfilled]: (state, { payload }) => {
+        [registerUser.fulfilled]: (state, action) => {
             state.loading = false
             state.success = true // registration successful
         },
-        [registerUser.rejected]: (state, { payload }) => {
+        [registerUser.rejected]: (state, action) => {
             state.loading = false
-            state.error = payload
+            state.error = action.payload
         },
         [verifyAccount.pending]: (state) => {
             state.loading = true
             state.error = null
         },
-        [verifyAccount.fulfilled]: (state, { payload }) => {
+        [verifyAccount.fulfilled]: (state, action) => {
             state.loading = false
             state.success = true // registration successful
         },
-        [verifyAccount.rejected]: (state, { payload }) => {
+        [verifyAccount.rejected]: (state, action) => {
             state.loading = false
-            state.error = payload
+            state.error = action.payload
         },
         [loginUser.pending]: (state) => {
             state.loading = true
             state.error = null
         },
-        [loginUser.fulfilled]: (state, { payload }) => {
+        [loginUser.fulfilled]: (state, action) => {
+            console.log(action.payload);
             state.loading = false
-            state.userInfo = payload
-            state.userToken = payload.userToken
+            state.userInfo = action.payload.data.user
+            state.userToken = action.payload.data.accessToken
         },
-        [loginUser.rejected]: (state, { payload }) => {
+        [loginUser.rejected]: (state, action) => {
             state.loading = false
-            state.error = payload
+            state.error = action.payload
         },
     },
   });

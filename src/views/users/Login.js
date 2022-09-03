@@ -4,64 +4,52 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import authStyle from './css/auth.module.css';
 import { loginUser } from '../../server/actions/userAction';
+import DefaultSpinner from "../../components/assets/spinner/DefaultSpinner";
 
 function Login() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [errors, setErrors] = useState({});
-
   const initialLoginState = {
     username: null,
     password: null
-    };
-    const [user, setUser] = useState(initialLoginState);
+  };
+  const [user, setUser] = useState(initialLoginState);
 
-    const { loading, userInfo, error, success } = useSelector(
-        (state) => state.user
-    );
+  const { loading, userInfo, error, success } = useSelector(
+      (state) => state.user
+  );
 
-    useEffect(() => {
-        // redirect user to login page if registration was successful
-        if (success) navigate('/login')
-        // redirect authenticated user to profile screen
-        if (userInfo) navigate('/user-profile')
-    }, [navigate, userInfo, success]);
+  useEffect(() => {
+    console.log('userInfo', userInfo);
+    if (userInfo) navigate('/dashboard')
+  }, [navigate, userInfo, success]);
 
-    const handleInputChange = event => {
-    const { name, value } = event.target;
-    setUser({ ...user, [name]: value });
+  const handleInputChange = event => {
+  const { name, value } = event.target;
+  setUser({ ...user, [name]: value });
   };
 
-    const handleSubmit = async () => {
+  const handleSubmit = async () => {
 
-        console.log('Button Clicked!');
-        //event.preventDefault();
-    //if (canSave) {
+    console.log('Button Clicked!');
     try {
       
-      if(
-        user.username &&
-        user.password
-      ) {
-        await dispatch(loginUser(user)).unwrap();
-        //toast.success('course successful created');
-      } else {
-        //toast.warning('Invalid data submited');
-      }
+      await dispatch(loginUser(user)).unwrap();
 
 
     } catch (err) {
-      console.error('Failed to save the course: ', err)
+      setErrors(err);
+      console.error('Failed to login: ', err)
       //toast.warning(err.message);
     } finally {
 
     }
-    //}
   }
     return (
       <>
+        {loading ? <DefaultSpinner /> : ''}
         <div className="container-xxl">
           <div className={`${authStyle.authenticationWrapper} ${authStyle.authenticationBasic} container-p-y`}>
             <div className={`${authStyle.authenticationInner}`}>
@@ -138,12 +126,14 @@ function Login() {
                       <label htmlFor="email" className="form-label">Email or Phone</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={"form-control " + (error?.data?.username ? 'is-invalid' : '')}
                         id="email"
                         name="username"
                         placeholder="Enter your email or phone"
+                        onChange={handleInputChange}
                         autoFocus
                       />
+                      <div className="invalid-feedback">{error?.data?.username}</div>
                     </div>
                     <div className="mb-3 form-password-toggle">
                       <div className="d-flex justify-content-between">
@@ -156,12 +146,14 @@ function Login() {
                         <input
                           type="password"
                           id="password"
-                          className="form-control"
+                          className={"form-control " + (error?.data?.password ? 'is-invalid' : '')}
                           name="password"
-                          placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                          placeholder="Password"
+                          onChange={handleInputChange}
                           aria-describedby="password"
                         />
                         <span className="input-group-text cursor-pointer"><i className="bx bx-hide"></i></span>
+                        <div className="invalid-feedback">{error?.data?.password}</div>
                       </div>
                     </div>
                     <div className="mb-3">

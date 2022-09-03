@@ -3,14 +3,21 @@ import userService from "../services/userService";
 
 export const registerUser = createAsyncThunk(
   "user/register",
-  async (data) => {
-    const res = await userService.registerUser(data);
-    return res.data;
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await userService.registerUser(data);
+      return res.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err
+      }
+      return rejectWithValue(err.response.data)
+    }
   }
 );
 
 export const verifyAccount = createAsyncThunk(
-  "user/login",
+  "user/verify",
   async ({ userId, token, data }) => {
     const res = await userService.verifyAccount( userId, token, data );
     return res.data;
@@ -19,9 +26,17 @@ export const verifyAccount = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   "user/login",
-  async (data) => {
-    const res = await userService.loginUser( data );
-    return res.data;
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await userService.loginUser( data );
+      localStorage.setItem('userToken', res.data.data.accessToken);
+      return res.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err
+      }
+      return rejectWithValue(err.response.data)
+    }
   }
 );
 
