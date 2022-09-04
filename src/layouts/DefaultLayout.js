@@ -2,15 +2,22 @@ import React from 'react'
 import { Container, Sidebar, Footer, Header } from '../components/assets'
 function DefaultLayout() {
     return (
-        <div>
-        <Sidebar />
-        <div className="wrapper d-flex flex-column min-vh-100 bg-light">
-          <Header />
-          <div className="body flex-grow-1 px-3">
-            <Container />
+      <div className="layout-wrapper layout-content-navbar">
+        <div className="layout-container">
+          <Sidebar />
+          <div className="layout-page">
+            <Header />
+            <div className="content-wrapper">
+              <div className="container-xxl flex-grow-1 container-p-y">
+                <Container />
+              </div>                
+              <Footer />
+              <div className="content-backdrop fade"></div>
+            </div>
           </div>
-          <Footer />
         </div>
+
+        <div className="layout-overlay layout-menu-toggle"></div>
       </div>
     );
 }
