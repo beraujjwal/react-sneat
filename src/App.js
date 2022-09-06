@@ -35,7 +35,6 @@ function App() {
               <Route path="*" name="Home" element={<DefaultLayout />} />
             </Routes>
           ) : (
-
             <Routes>
               <Route exact path="/login" name="Login Page" element={<Login />} />
               <Route exact path="/register" name="Register Page" element={<Register />} />
