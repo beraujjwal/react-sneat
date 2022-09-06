@@ -1,56 +1,82 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser, verifyAccount, loginUser, forgotPassword, resetPassword } from '../actions/userAction'
+import { getAllRoles, createRole, retrieveRole, updateRole, deleteRole } from '../actions/roleAction'
 
 const initialState = {
     success: false,
     loading: false,
-    userInfo: null,
-    userToken: null,
+    data: null,
     error: null,
 }
 
-const userSlice = createSlice({
-    name: "user",
+const roleSlice = createSlice({
+    name: "role",
     initialState,
     extraReducers: {
-        [registerUser.pending]: (state, action) => {
+        [getAllRoles.pending]: (state, action) => {
             state.loading = true
             state.error = null
         },
-        [registerUser.fulfilled]: (state, action) => {
+        [getAllRoles.fulfilled]: (state, action) => {
             state.loading = false
-            state.success = true // registration successful
+            state.success = true
+            state.data = action.payload.data
         },
-        [registerUser.rejected]: (state, action) => {
+        [getAllRoles.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload
         },
-        [verifyAccount.pending]: (state) => {
+        [createRole.pending]: (state) => {
             state.loading = true
             state.error = null
         },
-        [verifyAccount.fulfilled]: (state, action) => {
+        [createRole.fulfilled]: (state, action) => {
             state.loading = false
-            state.success = true // registration successful
+            state.success = true
+            state.data = action.payload.data
         },
-        [verifyAccount.rejected]: (state, action) => {
+        [createRole.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload
         },
-        [loginUser.pending]: (state) => {
+        [retrieveRole.pending]: (state) => {
             state.loading = true
             state.error = null
         },
-        [loginUser.fulfilled]: (state, action) => {
-            console.log(action.payload);
+        [retrieveRole.fulfilled]: (state, action) => {
             state.loading = false
-            state.userInfo = action.payload.data.user
-            state.userToken = action.payload.data.accessToken
+            state.success = true
+            state.data = action.payload.data
         },
-        [loginUser.rejected]: (state, action) => {
+        [retrieveRole.rejected]: (state, action) => {
+            state.loading = false
+            state.error = action.payload
+        },
+        [updateRole.pending]: (state) => {
+            state.loading = true
+            state.error = null
+        },
+        [updateRole.fulfilled]: (state, action) => {
+            state.loading = false
+            state.success = true
+            state.data = action.payload.data
+        },
+        [updateRole.rejected]: (state, action) => {
+            state.loading = false
+            state.error = action.payload
+        },
+        [deleteRole.pending]: (state) => {
+            state.loading = true
+            state.error = null
+        },
+        [deleteRole.fulfilled]: (state, action) => {
+            state.loading = false
+            state.success = true
+            state.data = action.payload.data
+        },
+        [deleteRole.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload
         },
     },
   });
-  export default userSlice.reducer
+  export default roleSlice.reducer

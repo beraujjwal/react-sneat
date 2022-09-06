@@ -30,8 +30,8 @@ function Login() {
   }, [navigate, userInfo, success]);
 
   const handleInputChange = event => {
-  const { name, value } = event.target;
-  setUser({ ...user, [name]: value });
+    const { name, value } = event.target;
+    setUser({ ...user, [name]: value });
   };
 
   const handleSubmit = async () => {

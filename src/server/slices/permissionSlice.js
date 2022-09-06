@@ -17,6 +17,7 @@ const permissionSlice = createSlice({
             state.error = null
         },
         [getAllPermissions.fulfilled]: (state, action) => {
+            console.log(action);
             state.loading = false
             state.success = true
             state.data = action.payload.data

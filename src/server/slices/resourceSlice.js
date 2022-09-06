@@ -1,56 +1,83 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser, verifyAccount, loginUser, forgotPassword, resetPassword } from '../actions/userAction'
+import { getAllResources, createResource, retrieveResource, updateResource, deleteResource } from '../actions/resourceAction'
 
 const initialState = {
     success: false,
     loading: false,
-    userInfo: null,
-    userToken: null,
+    data: null,
     error: null,
 }
 
-const userSlice = createSlice({
-    name: "user",
+const resourceSlice = createSlice({
+    name: "resource",
     initialState,
     extraReducers: {
-        [registerUser.pending]: (state, action) => {
+        [getAllResources.pending]: (state, action) => {
             state.loading = true
             state.error = null
         },
-        [registerUser.fulfilled]: (state, action) => {
+        [getAllResources.fulfilled]: (state, action) => {
+            console.log(action);
             state.loading = false
-            state.success = true // registration successful
+            state.success = true
+            state.data = action.payload.data
         },
-        [registerUser.rejected]: (state, action) => {
+        [getAllResources.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload
         },
-        [verifyAccount.pending]: (state) => {
+        [createResource.pending]: (state) => {
             state.loading = true
             state.error = null
         },
-        [verifyAccount.fulfilled]: (state, action) => {
+        [createResource.fulfilled]: (state, action) => {
             state.loading = false
-            state.success = true // registration successful
+            state.success = true
+            state.data = action.payload.data
         },
-        [verifyAccount.rejected]: (state, action) => {
+        [createResource.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload
         },
-        [loginUser.pending]: (state) => {
+        [retrieveResource.pending]: (state) => {
             state.loading = true
             state.error = null
         },
-        [loginUser.fulfilled]: (state, action) => {
-            console.log(action.payload);
+        [retrieveResource.fulfilled]: (state, action) => {
             state.loading = false
-            state.userInfo = action.payload.data.user
-            state.userToken = action.payload.data.accessToken
+            state.success = true
+            state.data = action.payload.data
         },
-        [loginUser.rejected]: (state, action) => {
+        [retrieveResource.rejected]: (state, action) => {
+            state.loading = false
+            state.error = action.payload
+        },
+        [updateResource.pending]: (state) => {
+            state.loading = true
+            state.error = null
+        },
+        [updateResource.fulfilled]: (state, action) => {
+            state.loading = false
+            state.success = true
+            state.data = action.payload.data
+        },
+        [updateResource.rejected]: (state, action) => {
+            state.loading = false
+            state.error = action.payload
+        },
+        [deleteResource.pending]: (state) => {
+            state.loading = true
+            state.error = null
+        },
+        [deleteResource.fulfilled]: (state, action) => {
+            state.loading = false
+            state.success = true
+            state.data = action.payload.data
+        },
+        [deleteResource.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload
         },
     },
   });
-  export default userSlice.reducer
+  export default resourceSlice.reducer
